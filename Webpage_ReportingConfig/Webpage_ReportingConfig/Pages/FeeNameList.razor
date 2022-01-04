@@ -1,0 +1,48 @@
+﻿@page "/ProfitAndLossFeeNames"
+
+@using Webpage_ReportingConfig.Data
+@using Webpage_ReportingConfig.Service
+@inject FeeNameService FeeNameService
+
+<h1>Profit And Loss Fees</h1>
+
+<p>This component gets Profit And Loss Fee Names from a service.</p>
+<a href="ProfitAndLossFeeName/0">Add</a>
+@if (feeNames == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Fee Name</th>
+                <th>Fee Type</th>
+                <th>Id</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var feeName in feeNames)
+            {
+                <tr>
+                    <td>@feeName.Name.</td>
+                    <td>@feeName.Type.ToString()</td>
+                    <td>@feeName.Id</td>
+                    <td>
+                        <a href="ProfitAndLossFeeName/@feeName.Id">Edit</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Webpage_ReportingConfig.Models.FeeName> feeNames;
+
+    protected override async Task OnInitializedAsync()
+    {
+        feeNames = await FeeNameService.GetFeeNames(null);
+    }
+}

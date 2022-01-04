@@ -1,0 +1,87 @@
+﻿@page "/ProfitAndLossFeeName/{id:int}"
+@using Webpage_ReportingConfig.Data
+@using Webpage_ReportingConfig.Service
+
+@inject FeeNameService FeeNameService
+@inject NavigationManager Nav;
+
+@if (Id == 0)
+{
+    <h3>Add New</h3>
+}
+else
+{
+    <h3>Edit ProfitAndLossFee Id</h3>
+}
+
+<EditForm Model="feeName" OnValidSubmit="@SubmitForm">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <p hidden="@ShowId">Id=@Id ShowId=@ShowId FeeTypeSelected=@feeName.Type</p>
+    @if (Id != 0)
+    {
+    <div class="form-group">
+        <label>Id</label>
+        <input id="id" name="id" @bind-value="feeName.Id" readonly />
+
+    </div>
+    }
+    <div class="form-group">
+        <label>Fee Name</label>
+        <InputText id="Name" name="name" @bind-Value="feeName.Name"></InputText>
+
+    </div>
+    <div class="form-group">
+        <label>Fee Type</label>
+        <InputSelect id="Type" name="Type" class="form-control" @bind-Value="feeName.Type" @onchange="@OnChangeFeeNameType" style="width:150px">
+            @foreach (var feeType in feeTypes)
+            {
+                <option value="@feeType">@feeType.ToString()</option>
+            }
+        </InputSelect>
+
+    </div>
+
+    @if (Id == 0)
+    {
+
+        <button type="submit" class="btn-success">Add</button>
+    }
+    else
+    {
+        <button type="submit" class="btn-primary">Edit</button>
+    }
+
+</EditForm>
+
+@code {
+
+    [Parameter]
+    public int Id { get; set; }
+    private Webpage_ReportingConfig.Models.FeeName feeName;
+    public List<Webpage_ReportingConfig.Models.FeeType> feeTypes;
+    private bool ShowId = true;
+    private string FeeTypeSelected;
+    protected async override Task OnInitializedAsync()
+    {
+        feeTypes = Models.FeeTypeList.GetFeeTypes();
+
+        feeName = new Models.FeeName();
+
+        if (Id != 0)
+        {
+            feeName = await FeeNameService.GetFeeName(Id);
+        }
+        // base.OnInitialized();
+    }
+    public async Task SubmitForm()
+    {
+
+        await FeeNameService.SaveFeeName(feeName);
+        Nav.NavigateTo("ProfitAndLossFeeNames");
+    }
+    void OnChangeFeeNameType(ChangeEventArgs changeEvent)
+    {
+        FeeTypeSelected = changeEvent.Value.ToString();
+    }
+}

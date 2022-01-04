@@ -1,0 +1,108 @@
+﻿@page "/ProfitAndLossFee/{id:int}"
+@using Webpage_ReportingConfig.Data
+@using Webpage_ReportingConfig.Service
+@inject IProfitAndLossFeeService ProfitAndLossService
+@inject FeeNameService FeeNameService
+@inject NavigationManager Nav;
+
+<h3>Edit ProfitAndLossFee </h3>
+
+<EditForm Model="profitAndLossFee" OnValidSubmit="@SubmitForm">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    @* <p>Id=@Id  FeeTypeSelected=@profitAndLossFee?.FeeNameId @FeeNameId</p>*@
+    <div class="form-group">
+        <label>Id</label>
+        <input id="id" name="id" class="form-control" @bind-value="profitAndLossFee.Id" readonly  style="width:150px"/>
+
+    </div>
+    <div class="form-group">
+        <label>Fee Name</label>
+        <Select class="form-control" @onchange="@OnChange" style="width:250px">
+            <option value="-1">Choose Fee</option>
+            @foreach (var feeName in feeNames)
+            {
+                <option value="@feeName.Id">@feeName.Name.ToString()</option>
+            }
+        </Select>
+    </div>
+    @if ((profitAndLossFee.Type == Models.FeeType.Percentage && SelectedFeeName == null) || (SelectedFeeName != null && SelectedFeeName.Type == Models.FeeType.Percentage))
+    {
+        <div class="form-group">
+            <label>Fee Percentage</label>
+            <input id="FeePercentage" name="FeePercentage" class="form-control" @bind-value="profitAndLossFee.FeePercentage"  style="width:150px"/>
+
+        </div>
+    }
+
+    @if ((profitAndLossFee.Type == Models.FeeType.Value && SelectedFeeName == null) || (SelectedFeeName != null && SelectedFeeName.Type == Models.FeeType.Value))
+    {
+        <div class="form-group">
+            <label>Fee Value</label>
+            <input id="FeeValue" name="FeeValue" class="form-control" @bind-value="profitAndLossFee.FeeValue "  style="width:150px"/>
+
+        </div>
+    }
+    <div class="form-group">
+        <label>Brand</label>
+        <InputSelect id="Brand" name="Brand" class="form-control" @bind-Value="profitAndLossFee.Brand"  style="width:250px">
+            @foreach (var brand in brandList)
+            {
+                <option value="@brand">@brand.ToString()</option>
+            }
+        </InputSelect>
+
+    </div>
+    @if (Id == 0)
+    {
+        <button type="submit" class="btn-success">Add</button>
+    }
+    else
+    {
+        <button type="submit" class="btn-primary">Edit</button>
+    }
+</EditForm>
+
+@code {
+
+    [Parameter]
+    public int Id { get; set; }
+    private Webpage_ReportingConfig.Data.ProfitAndLossFee profitAndLossFee;
+    public  List<Brand> brandList;
+    public List<Webpage_ReportingConfig.Models.FeeName> feeNames = new List<Webpage_ReportingConfig.Models.FeeName>();
+    public int FeeNameId = -1;
+    public Webpage_ReportingConfig.Models.FeeName SelectedFeeName;
+
+    protected async override Task OnInitializedAsync()
+    {
+        brandList = BrandList.GetBrandList();
+        profitAndLossFee = new Data.ProfitAndLossFee();
+       if(Id != 0)
+        {
+            profitAndLossFee = await ProfitAndLossService.GetProfitAndLossFee(Id);
+        }
+        feeNames.AddRange(await FeeNameService.GetFeeNames(null));
+        // base.OnInitialized();
+    }
+    public void SubmitForm()
+    {
+        profitAndLossFee.FeeNameId = FeeNameId > 0 ? FeeNameId : profitAndLossFee.FeeNameId;
+        if (Id == 0)
+        {
+            ProfitAndLossService.SaveProfitAndLossFee(profitAndLossFee);
+
+        }
+        else
+        {
+
+            
+            ProfitAndLossService.SaveProfitAndLossFee(profitAndLossFee);
+        }
+        Nav.NavigateTo("/");
+    }
+    public async Task OnChange(ChangeEventArgs eventArgs)
+    {
+        FeeNameId = int.Parse( eventArgs.Value.ToString());
+        SelectedFeeName = await FeeNameService.GetFeeName(FeeNameId);
+    }
+}

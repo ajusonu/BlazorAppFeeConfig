@@ -1,0 +1,64 @@
+﻿@page "/"
+
+@using Webpage_ReportingConfig.Data
+@using Webpage_ReportingConfig.Service
+@inject IProfitAndLossFeeService ProfitAndLossService
+@inject FeeNameService FeeNameService
+
+<h1>Profit And Loss Fees</h1>
+
+<p>This component gets Profit And Loss Fees from a service.</p>
+<a href="ProfitAndLossFee/0">Add</a>
+@if (profitAndLossFees == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Fee Name</th>
+                <th>Brand</th>
+                <th>Fee</th>
+                <th>Fee Type</th>
+
+                <th>Id</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var profitAndLossFee in profitAndLossFees)
+            {
+            <tr>
+                <td>@profitAndLossFee.Name</td>
+                <td>@profitAndLossFee.Brand.ToString()</td>
+                @if (profitAndLossFee.Type == Models.FeeType.Value)
+                {
+                    <td>@profitAndLossFee.FeeValue</td>
+                }
+                else
+                {
+                    <td>@profitAndLossFee.FeePercentage</td>
+
+                }
+                <td>@profitAndLossFee.Type</td>
+
+                <td>@profitAndLossFee.Id</td>
+                <td>
+                    <a href="ProfitAndLossFee/@profitAndLossFee.Id">Edit</a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Webpage_ReportingConfig.Data.ProfitAndLossFee> profitAndLossFees;
+
+    protected override async Task OnInitializedAsync()
+    {
+        profitAndLossFees = await ProfitAndLossService.GetProfitAndLossFees();
+       
+    }
+}
