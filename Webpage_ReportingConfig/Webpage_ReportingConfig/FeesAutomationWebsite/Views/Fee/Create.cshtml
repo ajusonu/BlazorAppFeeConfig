@@ -1,0 +1,150 @@
+﻿@model FeesAutomationWebsite.Models.Fee
+
+@{
+    //Layout = null;
+    ViewBag.Title = "Add or Edit";
+    List<SelectListItem> configTypeListItems = new List<SelectListItem>();
+    configTypeListItems.Add(new SelectListItem() { Text = "Choose Config Type", Value = "0", Selected = true });
+    configTypeListItems.Add(new SelectListItem() { Text = "By Profile", Value = "1", Selected = true });
+    configTypeListItems.Add(new SelectListItem() { Text = "By Company Id", Value = "2", Selected = true });
+}
+<div class="container">
+    @using (Html.BeginForm("Fee_Save", "Fee", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.EditMode)
+        @Html.CheckBoxFor(model => model.EditAutoApply, new { @class = "hidden" })
+    <div class="form-horizontal">
+
+        <h4>Fee</h4>
+        <hr />
+        @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
+        <div class="form-group">
+            @Html.LabelFor(model => model.OutletCode, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.OutletCode, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.OutletCode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BranchCode, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.BranchCode, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.BranchCode, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group" id="DivAutoApply">
+            @Html.LabelFor(model => model.AutoApply, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.CheckBoxFor(model => model.AutoApply, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.AutoApply, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.PricingProfile, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.PricingProfile, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PricingProfile, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CompanyId, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.CompanyId, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CompanyId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.FeeType, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @if (!Model.EditMode)
+                {
+                    @Html.DropDownListFor(model => model.FeeType, Model.FeeTypes.Select(f => new SelectListItem() { Text = f.Description, Value = f.Code }), htmlAttributes: new { @class = "form-control" })
+                }
+                else
+                {
+                    @Html.EditorFor(model => model.FeeType, new { htmlAttributes = new { @class = "form-control" } })
+                }
+                @Html.ValidationMessageFor(model => model.FeeType, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div id="DivFeeTypeDescription" class="form-group">
+            @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div id="divCheckBoxes" class="form-group">
+            @Html.Label("Choose Fee Config Type", htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                @Html.DropDownList("ConfigType", new SelectList(configTypeListItems, "Value", "Text"), htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-3 col-md-9">
+                <p id="ValidateConfigType"></p>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.FeePerSegment, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                <div class="input-group">
+                    <span class="input-group-addon">$</span>
+                    @Html.EditorFor(model => model.FeePerSegment, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                @Html.ValidationMessageFor(model => model.FeePerSegment, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.FeePerFolder, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                <div class="input-group">
+                    <span class="input-group-addon">$</span>
+                    @Html.EditorFor(model => model.FeePerFolder, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                @Html.ValidationMessageFor(model => model.FeePerFolder, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.FeePerDuration, htmlAttributes: new { @class = "control-label col-md-3" })
+            <div class="col-md-9">
+                <div class="input-group">
+                    <span class="input-group-addon">$</span>
+                    @Html.EditorFor(model => model.FeePerDuration, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                @Html.ValidationMessageFor(model => model.FeePerDuration, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-3 col-md-9">
+                <p id="ValidateStatus"></p>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-9">
+                <input id="saveFeeSetup" type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-9">
+                <span class="text-danger">
+                    @Html.DisplayFor(model => model.ErrorDescription)
+                </span>
+            </div>
+        </div>
+    </div>
+    }
+
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/feemanage")
+}

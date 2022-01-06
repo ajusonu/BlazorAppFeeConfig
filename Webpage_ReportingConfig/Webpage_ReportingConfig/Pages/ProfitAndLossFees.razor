@@ -4,6 +4,7 @@
 @using Webpage_ReportingConfig.Service
 @inject IProfitAndLossFeeService ProfitAndLossService
 @inject FeeNameService FeeNameService
+@inject NavigationManager Nav;
 
 <h1>Profit And Loss Fees</h1>
 
@@ -11,13 +12,25 @@
 <a href="ProfitAndLossFee/0">Add</a>
 @if (profitAndLossFees == null)
 {
-    <p><em>Loading...</em></p>
+<p><em>Loading...</em></p>
 }
 else
 {
+<EditForm Model="profitAndLossFees" OnValidSubmit="@DeleteSelected">
+    <table>
+        <tr>
+            <td>
+                <input id="SearchText" name="SearchText" class="form-control" @onchange="@SearchTextChange" style="width:150px" />
+            </td>
+            <td>
+                <button type="button" @onclick="@BottonSearchFeeClicked" class="btn-success">Search</button>
+            </td>
+        </tr>
+    </table>
     <table class="table">
         <thead>
             <tr>
+                <th>Select</th>
                 <th>Fee Name</th>
                 <th>Brand</th>
                 <th>Fee</th>
@@ -29,36 +42,78 @@ else
         <tbody>
             @foreach (var profitAndLossFee in profitAndLossFees)
             {
-            <tr>
-                <td>@profitAndLossFee.Name</td>
-                <td>@profitAndLossFee.Brand.ToString()</td>
-                @if (profitAndLossFee.Type == Models.FeeType.Value)
-                {
-                    <td>@profitAndLossFee.FeeValue</td>
-                }
-                else
-                {
-                    <td>@profitAndLossFee.FeePercentage</td>
+                <tr>
+                    <td><input type="checkbox" name="IdsChecked" value="@profitAndLossFee.Id" @onchange=" e=> { OnCheckBoxChanges(profitAndLossFee.Id, e.Value); }  " /></td>
+                    <td>@profitAndLossFee.Name</td>
+                    <td>@profitAndLossFee.Brand.ToString()</td>
+                    @if (profitAndLossFee.Type == Models.FeeType.Value)
+                    {
+                        <td>@profitAndLossFee.FeeValue</td>
+                    }
+                    else
+                    {
+                        <td>@profitAndLossFee.FeePercentage</td>
 
-                }
-                <td>@profitAndLossFee.Type</td>
+                    }
+                    <td>@profitAndLossFee.Type</td>
 
-                <td>@profitAndLossFee.Id</td>
-                <td>
-                    <a href="ProfitAndLossFee/@profitAndLossFee.Id">Edit</a>
-                </td>
-            </tr>
+                    <td>@profitAndLossFee.Id</td>
+                    <td>
+                        <a href="ProfitAndLossFee/@profitAndLossFee.Id">Edit</a>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>
+    <button type="submit" class="btn-danger">Delete Selected</button>
+</EditForm>
 }
 
 @code {
     private List<Webpage_ReportingConfig.Data.ProfitAndLossFee> profitAndLossFees;
+    public List<int> SelectedIds = new List<int>();
+    public string SearchText="";
 
     protected override async Task OnInitializedAsync()
     {
-        profitAndLossFees = await ProfitAndLossService.GetProfitAndLossFees();
-       
+        profitAndLossFees = await ProfitAndLossService.GetProfitAndLossFees(SearchText);
+
     }
+    private void OnCheckBoxChanges(int checkId, object value)
+    {
+
+        bool selected = (bool)value;
+        if (selected)
+        {
+            SelectedIds.Add(checkId);
+        }
+        else
+        {
+            SelectedIds.Remove(checkId);
+        }
+
+    }
+    public void SearchTextChange(ChangeEventArgs changeEvent)
+    {
+        SearchText = changeEvent.Value.ToString();
+    }
+    public async Task BottonSearchFeeClicked()
+    {
+        var b = SearchText;
+        profitAndLossFees = await ProfitAndLossService.GetProfitAndLossFees(SearchText);
+
+    }
+    public async Task DeleteSelected()
+    {
+        int countSelected = SelectedIds.Count;
+        if(countSelected > 0)
+        {
+            bool done =  await ProfitAndLossService.DeleteSelectedProfitAndLossFee(SelectedIds);
+            if (done)
+            {
+                profitAndLossFees = await ProfitAndLossService.GetProfitAndLossFees();
+            }
+        }
+    }
+
 }

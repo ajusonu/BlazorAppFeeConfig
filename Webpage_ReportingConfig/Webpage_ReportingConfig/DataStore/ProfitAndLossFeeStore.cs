@@ -26,7 +26,7 @@ namespace Webpage_ReportingConfig.DataStore
         /// <summary>
         /// Get all or specific Orbit Outlet from database
         /// </summary>
-        public async Task<List<ProfitAndLossFee>> GetProfitAndLossFees(int brand = 0)
+        public async Task<List<ProfitAndLossFee>> GetProfitAndLossFees(int brand = 0, string SearchText="")
         {
             List<ProfitAndLossFee> fee = new List<ProfitAndLossFee>();
             try
@@ -41,6 +41,7 @@ namespace Webpage_ReportingConfig.DataStore
                     {
                         comm.CommandType = CommandType.StoredProcedure;
                         comm.Parameters.AddWithValue("Id", brand);
+                        comm.Parameters.AddWithValue("SearchText", SearchText);
 
                         // execute
                         using (SqlDataReader reader = await comm.ExecuteReaderAsync())
@@ -111,6 +112,33 @@ namespace Webpage_ReportingConfig.DataStore
             }
             return true;
         }
-
+        /// <summary>
+        /// Deleted Selected Fees 
+        /// </summary>
+        /// <returns></returns>
+        public async Task<bool> ProfitAndLossFee_Delete(List<int> ids)
+        {
+            try
+            {
+                using (SqlConnection conn = GetConnection())
+                {
+                    await conn.OpenAsync();
+                    using (SqlCommand comm = new SqlCommand("proc_ProfitAndLossFee_Delete", conn))
+                    {
+                        comm.CommandType = CommandType.StoredProcedure;
+                        comm.Parameters.AddWithValue("Ids", string.Join(',', ids));
+                        
+                        await comm.ExecuteNonQueryAsync();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+                return false;
+                // todo: log errors
+            }
+            return true;
+        }
     }
 }

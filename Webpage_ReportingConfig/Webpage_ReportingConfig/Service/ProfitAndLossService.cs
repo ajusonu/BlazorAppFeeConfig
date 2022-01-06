@@ -30,11 +30,11 @@ namespace Webpage_ReportingConfig.Service
         /// Get list of Profit and Loss configs
         /// </summary>
         /// <returns></returns>
-        public async Task<List<ProfitAndLossFee>> GetProfitAndLossFees()
+        public async Task<List<ProfitAndLossFee>> GetProfitAndLossFees(string SearchText= "")
         {
             List<ProfitAndLossFee> fees = new List<ProfitAndLossFee>();
             ProfitAndLossFeeStore feeStore = new ProfitAndLossFeeStore(SQLEdwServerStore);
-            fees = await feeStore.GetProfitAndLossFees(0);
+            fees = await feeStore.GetProfitAndLossFees(0, SearchText);
             return await Task.FromResult(fees);
         }
         /// <summary>
@@ -49,6 +49,15 @@ namespace Webpage_ReportingConfig.Service
             
 
         }
-      
+        /// <summary>
+        /// Delete Selected Fee row 
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public async Task<bool> DeleteSelectedProfitAndLossFee(List<int> ids)
+        {
+            ProfitAndLossFeeStore feeStore = new ProfitAndLossFeeStore(SQLEdwServerStore);
+            return await feeStore.ProfitAndLossFee_Delete(ids);
+        }
     }
 }

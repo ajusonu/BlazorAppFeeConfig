@@ -1,0 +1,70 @@
+﻿@model IEnumerable<FeeAutomationLibrary.FeeTypeMapping>
+@{
+    ViewBag.Title = "Index";
+
+}
+<h2>Dolphin Configuration</h2>
+<table id="FeeTypeMapping-header-table" class="card card-table card-border-color card-border-color-primary" role="grid" style="width: 25%">
+    <thead>
+        <tr>
+            <th>
+                <a class="btn btn-success" onclick="location.href='@Url.Action("Create", "FeeTypeMapping")'">Add New</a>
+            </th>
+            <th>
+                <a id="btn-update-autoapply-selected" class="btn btn-success" tabindex="0" href="#">
+                    <span>Update Auto Apply</span>
+                </a>
+            </th>
+        </tr>
+</table>
+<br />
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card card-table card-border-color card-border-color-primary">
+            <div class="card-header row">
+                
+            </div>
+            <div class="card-body">
+                <div id="FeeTypeMapping-table_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
+                    <div class="row be-datatable-body">
+                        <div class="col-sm-12">
+                            <table id="FeeTypeMapping-table" class="table table-striped table-hover table-fw-widget dataTable" role="grid" style="width: 100%">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.OutletCode)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.FeeType)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.Description)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.Scope)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.QueryType)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.ExclusionCode)
+                                        </th>
+                                        <th>
+                                            @Html.DisplayNameFor(model => model.AutoApply)
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts {
+    @Scripts.Render("~/bundles/moment")
+    @Scripts.Render("~/bundles/feetypemappingmanage")
+}

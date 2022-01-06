@@ -1,0 +1,40 @@
+﻿@model IEnumerable<FeesAutomationWebsite.Models.Connection>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ServerName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ConnectionString)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ServerName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ConnectionString)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FailOrSuccess)
+        </td>
+        @*<td>
+            @Html.ActionLink("Details", "Details", new { connectionString = item.ConnectionString }) |
+        </td>*@
+    </tr>
+}
+
+</table>

@@ -1,0 +1,46 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="FeesAutomationWebsite.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="FeeScopeList" Type="System.Collections.Specialized.StringCollection" Scope="Application">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;string&gt;F|Per Folder&lt;/string&gt;
+  &lt;string&gt;S|Per Sector&lt;/string&gt;
+  &lt;string&gt;D|Per Duration&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
+    </Setting>
+    <Setting Name="HourList" Type="System.Collections.Specialized.StringCollection" Scope="Application">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;string&gt;-1&lt;/string&gt;
+  &lt;string&gt;1&lt;/string&gt;
+  &lt;string&gt;2&lt;/string&gt;
+  &lt;string&gt;4&lt;/string&gt;
+  &lt;string&gt;8&lt;/string&gt;
+  &lt;string&gt;12&lt;/string&gt;
+  &lt;string&gt;24&lt;/string&gt;
+  &lt;string&gt;48&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
+    </Setting>
+    <Setting Name="QueryTypeList" Type="System.Collections.Specialized.StringCollection" Scope="Application">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;string&gt;1|Hotel Only&lt;/string&gt;
+  &lt;string&gt;2|Car Only&lt;/string&gt;
+  &lt;string&gt;3|Car or Hotel&lt;/string&gt;
+  &lt;string&gt;4|Car and Hotel&lt;/string&gt;
+  &lt;string&gt;5|Amendment Fee - Domestic Hotel&lt;/string&gt;
+  &lt;string&gt;6|Amendment Fee - TransTasman&lt;/string&gt;
+  &lt;string&gt;7|Amendment Fee - South Pacific&lt;/string&gt;
+  &lt;string&gt;8|Amendment Fee - LongHaul&lt;/string&gt;
+  &lt;string&gt;9|Charge Back - Domestic Car&lt;/string&gt;
+  &lt;string&gt;10|Charge Back - Domestic Hotel&lt;/string&gt;
+  &lt;string&gt;11|Nett Hotel Fee - Domestic&lt;/string&gt;
+  &lt;string&gt;12|Charge Back - Domestic Other&lt;/string&gt;
+  &lt;string&gt;13|Cancellation Fee - Domestic &lt;/string&gt;
+  &lt;string&gt;14|Nett Car Fee - Domestic&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

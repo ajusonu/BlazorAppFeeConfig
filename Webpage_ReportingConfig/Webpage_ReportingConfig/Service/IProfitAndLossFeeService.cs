@@ -15,7 +15,7 @@ namespace Webpage_ReportingConfig.Service
         /// Get all the Profit and loss settings
         /// </summary>
         /// <returns></returns>
-        Task<List<ProfitAndLossFee>> GetProfitAndLossFees();
+        Task<List<ProfitAndLossFee>> GetProfitAndLossFees(string SearchText="");
         /// <summary>
         /// 
         /// </summary>
@@ -28,5 +28,11 @@ namespace Webpage_ReportingConfig.Service
         /// <param name="profitAndLossFee"></param>
         /// <returns></returns>
         Task<bool> SaveProfitAndLossFee(ProfitAndLossFee profitAndLossFee);
+        /// <summary>
+        /// Deleted fee rows selected List of Ids
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        Task<bool> DeleteSelectedProfitAndLossFee(List<int> ids);
     }
 }

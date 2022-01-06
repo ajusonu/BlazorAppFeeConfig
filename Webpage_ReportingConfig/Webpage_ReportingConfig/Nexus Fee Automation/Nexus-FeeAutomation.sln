@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29025.244
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexus.FeeAutomation", "Nexus-FeeAutomation\Nexus.FeeAutomation.csproj", "{77C458AD-7C6D-4382-ADA7-9D4FCA87CD5D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FeeAutomationLibrary", "FeeAutomationLibrary\FeeAutomationLibrary.csproj", "{EFFCC89E-B552-44F9-A2A7-030152B89397}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{77C458AD-7C6D-4382-ADA7-9D4FCA87CD5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{77C458AD-7C6D-4382-ADA7-9D4FCA87CD5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{77C458AD-7C6D-4382-ADA7-9D4FCA87CD5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{77C458AD-7C6D-4382-ADA7-9D4FCA87CD5D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFFCC89E-B552-44F9-A2A7-030152B89397}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFFCC89E-B552-44F9-A2A7-030152B89397}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFFCC89E-B552-44F9-A2A7-030152B89397}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFFCC89E-B552-44F9-A2A7-030152B89397}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7976B13B-D0B2-4F1C-9B74-9D889FC1103B}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 3
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://houseoftravel.visualstudio.com/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = FeeAutomationLibrary\\FeeAutomationLibrary.csproj
+		SccProjectName1 = FeeAutomationLibrary
+		SccLocalPath1 = FeeAutomationLibrary
+		SccProjectUniqueName2 = Nexus-FeeAutomation\\Nexus.FeeAutomation.csproj
+		SccProjectName2 = Nexus-FeeAutomation
+		SccLocalPath2 = Nexus-FeeAutomation
+	EndGlobalSection
+EndGlobal

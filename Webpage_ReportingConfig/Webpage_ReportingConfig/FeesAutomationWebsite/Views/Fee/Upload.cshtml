@@ -1,0 +1,143 @@
+﻿@using System.Web.Optimization;
+
+
+@{
+    ViewBag.Title = "Upload Fee";
+}
+
+<h2>Upload Fee</h2>
+
+<table class="table">
+    <tr class="row">
+        <td class="col-lg-6">
+            Fee Setup :Fee Matching Criteria<br />
+            <ul>
+                <li>Match 1 - Company Id and Outlet and FeeType.(Company Level)</li>
+                <li>Match 2 - Profile Id and Outlet and FeeType.(Profile Level)</li>
+                <li>Match 3 - Branch Code and Outlet and FeeType.(Branch Level)</li>
+                <li>Otherwise UnMatched.</li>
+            </ul>
+        </td>
+        <td class="col-lg-6">
+            <form action="/fee/upload" class="dropzone dz-clickable" id="dz">
+                <div class="dz-default dz-message">Drag Fee.csv files here to import the fee changes.</div>
+            </form>
+        </td>
+    </tr>
+</table>
+<table>
+    <thead class="thead-light">
+        <tr class="row">
+            <th class="col-lg-2">File Name</th>
+            <th class="col-lg-2">Succeeded</th>
+            <th class="col-lg-2 failed">failed</th>
+            <th class="col-lg-2">Row Count</th>
+            <th class="col-lg-5">Error</th>
+        </tr>
+    </thead>
+    <tr class="row">
+        <td class="col-lg-2" data-bind="text: FileName"></td>
+        <td class="col-lg-2 succeeded" data-bind="text: Succeeded"></td>
+        <td class="col-lg-2 failed" data-bind="text: Failed"></td>
+        <td class="col-lg-2" data-bind="text: RowCount"></td>
+        <td class="col-lg-5 failed" data-bind="text: Error"></td>
+    </tr>
+</table>
+<table class="table" id="statusTable" hidden>
+    <thead class="thead-light">
+        <tr class="row">
+            <th class="col-lg-2">Id</th>
+            <th class="col-lg-2">FeeType</th>
+            <th class="col-lg-2">Company Id</th>
+            <th class="col-lg-2">Profile Code</th>
+            <th class="col-lg-2">Description</th>
+            <th class="col-lg-5">failed</th>
+            <th class="col-lg-2">ActionPerformed</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: rows">
+        <tr class="row">
+            <td class="col-lg-2" data-bind="text: Id"></td>
+            <td class="col-lg-2" data-bind="text: FeeType"></td>
+            <td class="col-lg-2" data-bind="text: CompanyId"></td>
+            <td class="col-lg-2" data-bind="text: PricingProfile"></td>
+            <td class="col-lg-2" data-bind="text: Description"></td>
+            <td class="col-lg-5 failed" data-bind="text: ErrorDescription"></td>
+            <td class="col-lg-2" data-bind="text: ActionPerformed"></td>
+        </tr>
+    </tbody>
+</table>
+<br />
+@section Scripts
+{
+    @Scripts.Render("~/script/knockout");
+
+    <script type="text/javascript">
+        function RowUpdateViewModel(id, branch, companyId, profileCode, type, description, perFolder, perSegment, error, actionPerformed) {
+            var self = this;
+
+            self.Id = id;
+            self.BranchCode = branch;
+            self.CompanyId = companyId;
+            self.PricingProfile = profileCode;
+            self.FeeType = type;
+            self.Description = description;
+            self.FeePerFolder = perFolder;
+            self.FeePerSegment = perSegment;
+            self.ErrorDescription = error;
+            self.ActionPerformed = actionPerformed;
+
+        }
+        var ProgressViewModel = function () {
+            var self = this;
+            self.RowCount = ko.observable();
+            self.Succeeded = ko.observable();
+            self.Failed = ko.observable();
+            self.FileName = ko.observable();
+            self.Error = ko.observable();
+
+            self.rows = ko.observableArray();
+
+            this.addRow = function (rowUpdate) {
+                this.rows.push(rowUpdate);
+            }
+            this.UpdateProgress = function (fileName, succeeded, failed, count, error) {
+
+                self.FileName(fileName);
+                self.Succeeded(succeeded);
+                self.Failed(failed);
+                self.RowCount(count);
+                self.Error(error);
+            }
+        };
+        var vm = new ProgressViewModel();
+        ko.applyBindings(vm);
+        Dropzone.options.dz = {
+            init: function () {
+                this.on("complete", function (file) {
+                    this.removeFile(file);
+                 });
+                this.on("success", function (file, result) {
+
+                    vm.UpdateProgress(result.Filename, result.Succeeded, result.Failed, result.Count, result.Error);
+                    if (result.Rows != null) {
+                        $('#statusTable').show();
+                        result.Rows.forEach(function (row) {
+                            vm.rows.push(new RowUpdateViewModel(row.Id ,row.BranchCode, row.CompanyId,
+                                row.PricingProfile, row.FeeType, row.Description, row.FeePerFolder,
+                                row.FeePerSegment, row.ErrorDescription, row.ActionPerformed
+                            ))
+                        });
+                    }
+                });
+
+                this.on("addedFile", function () {
+                    if (this.files[1] != null)
+                        this.removeFile(this.files[0]);
+           
+                });
+            }
+        }
+
+    </script>
+}

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>FeeAutomationLibrary</id>
+    <version>$version$</version>
+    <title>House of Travel</title>
+    <authors>House of Travel Developers</authors>
+    <owners>House of Travel</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Library for FeeAutomation shared classes</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2019</copyright>
+    <dependencies>
+      <!-- these items should be kept up to date manually-->
+      <dependency id="HouseOfTravel" version="3.1.0.1"/>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\$Configuration$\FeeAutomationLibrary.dll" target="lib\net471"/>
+  </files>
+</package>

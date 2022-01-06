@@ -1,0 +1,113 @@
+﻿@using FeesAutomationWebsite.Models
+@model FeesAutomationWebsite.Models.PendingFeeFilterDataTableAjaxPostModel
+
+@{
+    ViewBag.Title = "Index";
+    List<SelectListItem> selectListItems = new List<SelectListItem>();
+
+    foreach (Access access in ViewBag.BranchOutletAccess)
+    {
+        selectListItems.Add(new SelectListItem() { Text = access.OutletCode, Value = access.OutletCode });
+
+    }
+    List<SelectListItem> statusListItems = new List<SelectListItem>();
+    statusListItems.Add(new SelectListItem() { Text = "All Status", Value = "", Selected = true });
+    foreach (FeeStatus val in Enum.GetValues(typeof(FeeStatus)))
+    {
+        statusListItems.Add(new SelectListItem() { Text = val.ToDescription(), Value = val.ToDescription() });
+    }
+
+    List<SelectListItem> feeCategories = new List<SelectListItem>();
+    foreach (FeeCategory category in ViewBag.FeeCategories)
+    {
+        feeCategories.Add(new SelectListItem() { Text = category.Description, Value = category.Category });
+
+    }
+
+}
+<h2>Pending Fees</h2>
+
+@section scripts {
+    @Scripts.Render("~/bundles/pendingfeelist")
+    @Scripts.Render("~/bundles/moment")
+}
+<div class="row">
+    <div class="col-sm-12">
+        <div class="card card-table card-border-color card-border-color-primary">
+            <div class="card-header row">
+
+            </div>
+            <div class="card-body">
+                <div id="pendingfees-table_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
+                    <div class="row be-datatable-body">
+                        <div class="col-sm-12">
+                            <div id="chkBx-Select-all-template">
+                                <table class="table" style="width:100%">
+                                    <tr class="row">
+                                        <td>
+                                            <a id="btn-queue-selected" class="btn btn-success" tabindex="0" href="#">
+                                                <span>Apply</span>
+                                            </a>
+                                        </td>
+
+                                        <td>
+                                            <a id="btn_cancel-selected" class="btn btn-danger" tabindex="1" href="#">
+                                                <span>Delete</span>
+                                            </a>
+                                        </td>
+                                        <td></td>
+                                        <td></td>
+                                        <td>
+                                            <label><span>Select OutletCode</span></label>
+                                            @Html.DropDownList("OutletCode", new SelectList(selectListItems, "Value", "Text", @Model.OutletCode != null ? @Model.OutletCode : String.Empty))
+                                        </td>
+                                        <td>
+                                            <label><span>Select Status</span></label>
+                                            @Html.DropDownList("FeeStatus", new SelectList(statusListItems, "Value", "Text", @Model.FeeStatus != null ? @Model.FeeStatus : FeeStatus.New.ToString()))
+                                        </td>
+                                        <td>
+                                            <label><span>Select Category</span></label>
+                                            @Html.DropDownList("Category", new SelectList(feeCategories, "Value", "Text"))
+                                        </td>
+                                        <td>
+                                            <label id="FolderScopeCode"><span>Folder</span></label>
+                                            <label id="SegmentScopeCode"><span>Segment</span></label>
+                                            <label id="DurationScopeCode"><span>Duration</span></label>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <table id="pendingfees-table" class="table table-striped table-hover table-fw-widget dataTable" role="grid" style="width: 100%">
+                                <thead>
+                                    <tr role="row">
+                                        <th tabindex="0" aria-controls="content-table" rowspan="1" colspan="1">
+                                            <label class="custom-control custom-checkbox custom-control-inline">
+                                                <input id="chkBx-Select-all" class="custom-control-input" type="checkbox" /><span class="custom-control-label custom-control-color">Select All</span>
+                                            </label>
+                                            
+                                        </th>
+                                        <th class="sorting" tabindex="0" rowspan="1" colspan="1">Company</th>
+                                        <th class="sorting" tabindex="0" rowspan="1" colspan="1">Booking</th>
+                                        <th class="sorting" tabindex="0" rowspan="1" colspan="1">Status</th>
+                                        <th class="sorting" tabindex="0" rowspan="1" colspan="1">Branch</th>
+                                        <th class="sorting" tabindex="0" rowspan="1" colspan="1">Created</th>
+                                        <th class="sorting" tabindex="0" rowspan="1" colspan="1">Amended</th>
+                                        <th class="sorting" tabindex="0" rowspan="1" colspan="1">Actioned</th>
+                                        <th class="sorting" tabindex="0" rowspan="1" colspan="1">Owner</th>
+                                        <th class="sorting" tabindex="0" rowspan="1" colspan="1">Fee Description</th>
+                                        <th tabindex="0" rowspan="1" colspan="1">Fee Type</th>
+                                        <th tabindex="0" rowspan="1" colspan="1">Fee</th>
+                                        <th class="sorting" tabindex="0" rowspan="1" colspan="1">Category</th>
+                                        <th tabindex="0" rowspan="1" colspan="1"></th>
+                                        <th class="sorting" tabindex="0" rowspan="1" colspan="1">EnableRowSelection</th>
+
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
